@@ -38,8 +38,7 @@ function confere() {
 function validaLogin(email, senha)
 {
   let podeEntrar = false;
-  const dataBase = JSON.parse(baseDeDados);
-  for(let elemento of dataBase)
+  for(let elemento of baseDeDados.usuarios)
   {
     if(elemento.email === email)
     {
@@ -51,17 +50,47 @@ function validaLogin(email, senha)
   }
   return podeEntrar;
 }
-
+function mostrar(msg) {
+  console.log(msg);
+}
 let form = selecionar('#formulario');
 
-if(localStorage === '')
+if(localStorage.getItem('manterConectado') === 'false'|| localStorage.getItem('manterConectado') === null)
 {
-  form.addEventListener('submit', function()
+  form.addEventListener('submit', function(event)
   {
-    let email = selecionar('email-input').value;
-    let senha = selecionar('password-input').value;
-    
+    let email = selecionar('#email-input').value;
+    let senha = selecionar('#password-input').value;
+    mostrar(email);
+    mostrar(senha);
+
+    if(validaLogin(email, senha))
+    {
+      localStorage.setItem('manterConectado', true);
+      selecionar('#loader').classList.remove("hidden")
+      setTimeout(() => {
+        window.location.href = "bemVindo.html";
+      }, 3000);
+    }
+    else
+    {
+      event.preventDefault();
+      let erros = selecionar('#error-container');
+      erros.classList.remove("hidden")
+      erros.innerHTML = "Email ou senha inválida.";
+      document.querySelector('#email-input').value = ""; 
+      /*
+        interessante notar o pq de não ter dado pra usar a variável email
+        ela serviu apenas para armazenar o que tinha dentro do input quando ele foi capturado. tentar atribuir outra coisa a ela 
+        aqui no js só vai mudar seu valor de variável, mas não o que tem dentro do objeto no front. tipo variável de referencia do java.
+      */
+        document.getElementById('password-input').value = "";//só pra testar
+    }
   })
+}
+else if(localStorage.getItem('manterConectado') === 'true')
+{
+  window.location.href = "bemVindo.html"
 }
 
 
