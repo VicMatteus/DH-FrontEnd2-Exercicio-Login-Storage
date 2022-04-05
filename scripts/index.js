@@ -28,6 +28,44 @@ const baseDeDados = {
   ],
 };
 
+function selecionar(campo)
+{
+  return document.querySelector(campo);
+}
+function confere() {
+  
+}
+function validaLogin(email, senha)
+{
+  let podeEntrar = false;
+  const dataBase = JSON.parse(baseDeDados);
+  for(let elemento of dataBase)
+  {
+    if(elemento.email === email)
+    {
+      if(elemento.password === senha)
+      {
+        return podeEntrar = true;
+      }
+    }
+  }
+  return podeEntrar;
+}
+
+let form = selecionar('#formulario');
+
+if(localStorage === '')
+{
+  form.addEventListener('submit', function()
+  {
+    let email = selecionar('email-input').value;
+    let senha = selecionar('password-input').value;
+    
+  })
+}
+
+
+
 //// ATIVIDADE
 
 /// Passo a passo:
